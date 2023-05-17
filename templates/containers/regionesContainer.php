@@ -1,11 +1,6 @@
-<div class="w-75" style="margin: auto;">
-<div class="row">
-
 <?php
 
 use Model\File;
-
-$xd = 'https://www.w3schools.com/bootstrap4/img_avatar1.png';
 
 $regions = [
     'lpl' => [
@@ -33,7 +28,7 @@ $regions = [
 foreach ($regions as $key => $region) {
     echo
     '
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3 mt-5">
         <div class="card bg-light border-light mb-3">
             <img class="card-img-top" src="' . $region['prueba'] . '">
             <div class="card-body text-center">
@@ -46,7 +41,5 @@ foreach ($regions as $key => $region) {
 }
 
 echo '
-</div>
-</div>
 </div>
 ';

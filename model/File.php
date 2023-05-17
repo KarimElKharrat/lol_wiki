@@ -4,11 +4,14 @@ namespace Model;
 
 class File
 {
-    private static $FILES_DIR = PROJECT_ROOT_PATH . 'metadata\files.json';
+    private static string $FILES_DIR = PROJECT_ROOT_PATH . 'metadata\files.json';
+
+    private static array $EXCLUDED = ['vendor', '.git', '.gitignore', '.vscode', 'composer.json'];
+
     /**
      * Incluye un archivo.
      * @param include
-    */
+     */
     public static function includeTemplateFile(string $include)
     {
         include(self::saveFilesJSON($include));
@@ -37,8 +40,10 @@ class File
     {
         $files = scandir($dir);
 
-        if (($key = array_search('vendor', $files)) !== false) {
-            unset($files[$key]);
+        foreach (self::$EXCLUDED as $exlude) {
+            if (($key = array_search($exlude, $files)) !== false) {
+                unset($files[$key]);
+            }
         }
 
         foreach ($files as $value) {

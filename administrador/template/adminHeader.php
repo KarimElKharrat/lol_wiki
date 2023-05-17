@@ -15,9 +15,9 @@
 
     <?php
     
-    $url = 'http://' . $_SERVER['HTTP_HOST'] . '/integracion-dam/lol_wiki';
-    $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/integracion-dam/lol_wiki/administrador';
-    
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lol_wiki';
+    $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lol_wiki/administrador';
+
     ?>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">

@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light" style="font-size: 20px !important;">
         
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-        <a class="navbar-brand ml-auto mr-5" href="#">Lol Wiki</a>
+        <a class="navbar-brand ml-auto mr-5" href="./index.php">Lol Wiki</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,11 +25,8 @@
         <div class="mx-auto order-0">
             
             <ul class="navbar-nav mr-auto">
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">Inicio</a>
-                </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Ligas</a>
+                    <a class="nav-link" href="<?php echo './regiones.php'; ?>">Ligas</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Equipos</a>
