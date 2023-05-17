@@ -1,17 +1,12 @@
 <?php
 
-define("PROJECT_ROOT_PATH", __DIR__ . '/../../');
-
-if (file_exists(PROJECT_ROOT_PATH . '/vendor/autoload.php')) {
-    require_once PROJECT_ROOT_PATH . '/vendor/autoload.php';
-}
+require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 use Model\File;
 
 File::includeTemplateFile('adminHeader.php');
 
 ?>
-
 
 <div class="col-md-12">
 

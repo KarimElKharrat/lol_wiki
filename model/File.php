@@ -4,7 +4,8 @@ namespace Model;
 
 class File
 {
-    private static string $FILES_DIR = PROJECT_ROOT_PATH . 'metadata\files.json';
+    private static string $FILES_PATH = PROJECT_ROOT_PATH . 'metadata';
+    private static string $FILES_DIR = PROJECT_ROOT_PATH . 'metadata' . DIRECTORY_SEPARATOR . 'files.json';
 
     private static array $EXCLUDED = ['vendor', '.git', '.gitignore', '.vscode', 'composer.json'];
 
@@ -23,6 +24,10 @@ class File
      */
     public static function saveFilesJSON(string $filename)
     {
+        if (!file_exists(self::$FILES_PATH)) {
+            mkdir(self::$FILES_PATH, 0777, true);
+        }
+        
         if (file_exists(self::$FILES_DIR)) {
             unlink(self::$FILES_DIR);
         }

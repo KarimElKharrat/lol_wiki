@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/inc/bootstrap.php";
+require __DIR__ . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 use Model\File;
 
