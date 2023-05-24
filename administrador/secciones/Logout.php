@@ -3,8 +3,8 @@
 require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 // TODO cambiar cuando se suba
-// $url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
-$url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
+$url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+// $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
 
 ?>
 <!doctype html>

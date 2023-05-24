@@ -1,10 +1,10 @@
 <?php
 
 // TODO cambiar cuando se suba
-// $url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
-// $adminUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/administrador';
-$url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
-$adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/administrador';
+$url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+$adminUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/administrador';
+// $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
+// $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/administrador';
 
 ?>
 <!doctype html>
