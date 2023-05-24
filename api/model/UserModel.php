@@ -10,6 +10,5 @@ class UserModel extends Database
     public function getUsers($limit)
     {
         return $this->select("SELECT * FROM usuarios ORDER BY id ASC LIMIT ?", ["i", $limit]);
-        
     }
 }
