@@ -1,7 +1,5 @@
 <?php
 
-namespace Model;
-
 class File
 {
     private static string $FILES_PATH = PROJECT_ROOT_PATH . 'metadata';

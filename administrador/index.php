@@ -26,7 +26,7 @@ $txt = '<!doctype html>
                         <form method="POST">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Usuario:</label> <label class="text-danger">*</label>
-                                <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuario">
+                                <input type="text" name="nombre" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuario">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Contraseña:</label> <label class="text-danger">*</label>
@@ -48,20 +48,25 @@ if ($_POST) {
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => 'http://localhost/lol_wiki/api/handler.php/user/list',
+        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/user/list',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => 'GET',
     ));
 
-    $users = json_decode(curl_exec($curl), true);
+    $users = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+    $users = json_decode($users, true);
     curl_close($curl);
 
-    $username = $_POST["username"];
+    
+
+    $nombre = $_POST["nombre"];
     $password = $_POST["password"];
 
-    foreach ($users as $user) {
-        if ($user['username'] === $username && $user['password'] === $password) {
-            header('Location: inicio.php');
+    if (!empty($users)) {
+        foreach ($users as $user) {
+            if ($user['nombre'] === $nombre && base64_decode($user['password']) === $password) {
+                header('Location: inicio.php');
+            }
         }
     }
 

@@ -1,5 +1,8 @@
 {
     "autoload": {
+		"classmap": [
+            "/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info"
+        ],
         "psr-4": {
             "Model\\": "model",
             "Inc\\": "inc",

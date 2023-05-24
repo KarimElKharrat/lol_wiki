@@ -1,7 +1,5 @@
 <?php
 
-use Model\File;
-
 $regions = [
     'lpl' => [
         'name' => 'China',

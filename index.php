@@ -2,14 +2,11 @@
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-use Model\File;
 
 try {
-    File::includeTemplateFile('Header.php');
-    File::includeTemplateFile(pathinfo(__FILE__)['filename'] . 'Container.php');
-    File::includeTemplateFile('Footer.php');
+    include(PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'templates/Header.php');
+    include(PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'templates/containers/' .pathinfo(__FILE__)['filename'] . 'Container.php');
+    include(PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'templates/Footer.php');
 } catch (\Throwable $th) {
     echo $th;
 }
-
-?>

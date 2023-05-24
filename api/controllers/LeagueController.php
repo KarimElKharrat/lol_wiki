@@ -1,12 +1,12 @@
 <?php
 
 require_once 'BaseController.php';
-require_once PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'UserModel.php';
+require_once PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'LeagueModel.php';
 
-class UserController extends BaseController
+class LeagueController extends BaseController
 {
     /** 
-     * "/user/list" Endpoint - lista de usuarios
+     * "/league/list" Endpoint - lista de ligas
      */
     public function listAction()
     {
@@ -16,13 +16,13 @@ class UserController extends BaseController
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $userModel = new UserModel();
+                $leagueModel = new LeagueModel();
                 $intLimit = 10;
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
-                $arrUsers = $userModel->getUsers($intLimit);
-                $responseData = json_encode($arrUsers);
+                $arrLeagues = $leagueModel->getLeagues($intLimit);
+                $responseData = json_encode($arrLeagues);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';

@@ -1,17 +1,10 @@
 <?php
 
-namespace Inc;
+/**
+ * Script que define variables necesarias
+ */
 
-class Config
-{
-    /**
-     * Inicializa datos.
-     */
-    public static function init()
-    {
-        define("DB_HOST", "localhost");
-        define("DB_USERNAME", "root");
-        define("DB_PASSWORD", "");
-        define("DB_DATABASE_NAME", "rest_api_demo");
-    }
-}
+define("DB_HOST", "PMYSQL170.dns-servicio.com:3306");
+define("DB_USERNAME", "lolesports_wiki");
+define("DB_PASSWORD", "Ur7d51p2?");
+define("DB_DATABASE_NAME", "9885716_lolesports_wiki");
