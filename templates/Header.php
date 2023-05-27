@@ -202,7 +202,6 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 </head>
 
 <body class="bg-light">
-
     <nav class="navbar navbar-expand-md navbar-light bg-light" style="font-size: 20px !important;">
 
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
@@ -231,11 +230,9 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 
             <nav class="navbar navbar-light bg-light ml-5">
                 <div class="container-fluid">
-                    <form class="d-flex input-group w-auto">
-                        <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search" aria-describedby="search-addon" />
-                        <button class="input-group-text border-0" id="search-addon">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
+                    <form class="d-flex input-group w-auto" method="post" action="prueba.php">
+                        <input type="text" class="form-control rounded" placeholder="Buscar" name="search"/>
+                        <input type="submit" class="input-group-text border-0" name="submit" value="Buscar" />
                     </form>
                 </div>
             </nav>
