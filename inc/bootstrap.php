@@ -1,5 +1,9 @@
 <?php
 
+if(!isset($_SESSION)) {
+    session_start();
+}
+
 /**
  * Script que se encarga de inicializar lo básico
  */
