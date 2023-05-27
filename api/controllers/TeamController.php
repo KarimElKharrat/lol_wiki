@@ -8,20 +8,16 @@ class TeamController extends BaseController
     /** 
      * "/team/list" Endpoint - lista de equipos
      */
-    public function listAction()
+    public function listAction($name = [''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $name = str_replace('name=', '', $name[0]);
                 $teamModel = new TeamModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrTeams = $teamModel->getTeams($intLimit);
+                $arrTeams = $teamModel->getTeams($name);
                 $responseData = json_encode($arrTeams);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

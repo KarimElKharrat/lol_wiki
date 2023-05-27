@@ -8,20 +8,16 @@ class SplitleagueController extends BaseController
     /** 
      * "/splitleague/list" Endpoint - lista de split-liga
      */
-    public function listAction()
+    public function listAction($name = [''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $name = str_replace('name=', '', $name[0]);
                 $splitleagueModel = new SplitleagueModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrSplitleagues = $splitleagueModel->getSplitleagues($intLimit);
+                $arrSplitleagues = $splitleagueModel->getSplitleagues($name);
                 $responseData = json_encode($arrSplitleagues);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

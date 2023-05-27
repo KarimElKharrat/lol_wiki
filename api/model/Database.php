@@ -64,7 +64,11 @@ class Database
                 throw new \Exception("Unable to do prepared statement: " . $query);
             }
             if ($params) {
-                $stmt->bind_param($params[0], $params[1]);
+                if (is_countable($params[1]) && count($params[1]) > 1) {
+                    $stmt->bind_param($params[0], ...$params[1]);
+                } else {
+                    $stmt->bind_param($params[0], $params[1]);
+                }
             }
             $stmt->execute();
             return $stmt;

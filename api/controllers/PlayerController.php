@@ -8,20 +8,16 @@ class PlayerController extends BaseController
     /** 
      * "/player/list" Endpoint - lista de jugadores
      */
-    public function listAction()
+    public function listAction($name = [''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $name = str_replace('name=', '', $name[0]);
                 $playerModel = new PlayerModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrPlayers = $playerModel->getPlayers($intLimit);
+                $arrPlayers = $playerModel->getPlayers($name);
                 $responseData = json_encode($arrPlayers);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

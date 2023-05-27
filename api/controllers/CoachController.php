@@ -8,20 +8,16 @@ class CoachController extends BaseController
     /** 
      * "/coach/list" Endpoint - lista de entrenadores
      */
-    public function listAction()
+    public function listAction($name = [''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $name = str_replace('name=', '', $name[0]);
                 $coachModel = new CoachModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrCoachs = $coachModel->getCoaches($intLimit);
+                $arrCoachs = $coachModel->getCoaches($name);
                 $responseData = json_encode($arrCoachs);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

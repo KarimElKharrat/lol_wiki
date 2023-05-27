@@ -7,11 +7,13 @@ class TeamModel extends Database
     /**
      * Devuelve a todos los equipos.
      */
-    public function getTeams($limit)
+    public function getTeams($name = '')
     {
         return $this->select(
-            "SELECT eq.id, eq.nombre, eq.tricode, paises.iso, paises.nombre AS pais FROM equipos eq INNER JOIN paises ON eq.origen = paises.id ORDER BY id ASC",
-            []
+            "SELECT eq.id, eq.image, eq.image_size, eq.nombre, eq.tricode, paises.iso, paises.nombre AS pais FROM equipos eq INNER JOIN paises ON eq.origen = paises.id
+            WHERE eq.nombre LIKE CONCAT('%',?,'%')
+            ORDER BY id ASC",
+            ["s", $name]
         );
     }
     
