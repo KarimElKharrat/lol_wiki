@@ -6,8 +6,8 @@ if(!isset($_SESSION)) {
     session_start();
 }
 
-$_SESSION['type'] = 'team';
-$_SESSION['name'] = 'Equipos';
+$_SESSION['type'] = 'coach';
+$_SESSION['name'] = 'Entranadores';
 
 File::includeTemplateFile('adminHeader.php');
 
