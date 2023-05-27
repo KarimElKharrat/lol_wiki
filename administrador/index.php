@@ -1,5 +1,25 @@
 <?php
 
+if(!isset($_SESSION)) {
+    session_start();
+}
+
+if ($_SERVER['HTTP_HOST'] === 'localhost') {
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
+    $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/administrador';
+} else {
+    $url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+    $adminUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/administrador';
+}
+
+if (!isset($_SESSION['isLogged'])) {
+    $_SESSION['isLogged'] = false;
+}
+
+if (true === $_SESSION['isLogged']) {
+    header('Location: ' . $url . 'administrador/inicio.php');
+}
+
 $txt = '<!doctype html>
 <html lang="en">
 
@@ -57,14 +77,15 @@ if ($_POST) {
     $users = json_decode($users, true);
     curl_close($curl);
 
-    
-
     $nombre = $_POST["nombre"];
     $password = $_POST["password"];
 
     if (!empty($users)) {
         foreach ($users as $user) {
             if ($user['nombre'] === $nombre && base64_decode($user['password']) === $password) {
+                $_SESSION['isLogged'] = true;
+                $_SESSION['username'] = $nombre;
+
                 header('Location: inicio.php');
             }
         }
@@ -85,4 +106,3 @@ $txt .= '" role="alert">
 </html>';
 
 echo $txt;
-?>

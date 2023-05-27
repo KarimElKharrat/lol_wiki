@@ -1,3 +1,23 @@
+<?php
+
+if(!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION['isLogged'])) {
+    $_SESSION['isLogged'] = false;
+}
+
+if ($_SERVER['HTTP_HOST'] === 'localhost') {
+    $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
+    $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/administrador';
+} else {
+    $url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+    $adminUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/administrador';
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -145,7 +165,18 @@
             border: 1px solid #ccc;
             border-top: none;
         }
+
+        .dropdown-menu-center {
+            right: auto;
+            left: 50%;
+            -webkit-transform: translate(-50%, 0);
+            -o-transform: translate(-50%, 0);
+            transform: translate(-50%, 0);
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
         function openCity(evt, cityName) {
             // Declare all variables
@@ -208,11 +239,30 @@
                     </form>
                 </div>
             </nav>
-            <ul class="navbar-nav ml-auto mr-5">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-info" href="administrador/index.php" title="Acceder al panel de administrador">
-                        <i class="fa fa-lock" aria-hidden="true"></i>
-                    </a>
+                    <?php
+
+                    if (true === $_SESSION['isLogged']) {
+                        echo '
+                        <div class="dropdown open">
+                            <button class="btn btn-success dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user" aria-hidden="true"></i> ' . $_SESSION['username'] . '
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-center" aria-labelledby="triggerId">
+                                <a class="dropdown-item text-success" href="administrador/inicio.php"><i class="fa fa-cog" aria-hidden="true"></i> Panel de Admin</a>
+                                <a class="dropdown-item text-danger" href="' . $adminUrl . '/secciones/Logout.php' . '"><i class="fa fa-sign-out" aria-hidden="true"></i> Cerrar Sesión</a>
+                            </div>
+                        </div>
+                        ';
+                    } else {
+                        echo '
+                        <a class="btn btn-info" href="administrador/inicio.php" title="Acceder al panel de administrador">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </a>
+                        ';
+
+                    } ?>
                 </li>
             </ul>
         </div>
