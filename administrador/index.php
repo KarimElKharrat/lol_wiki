@@ -1,6 +1,6 @@
 <?php
 
-if(!isset($_SESSION)) {
+if (!isset($_SESSION)) {
     session_start();
 }
 
@@ -30,6 +30,7 @@ $txt = '<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
@@ -52,8 +53,13 @@ $txt = '<!doctype html>
                                 <label for="exampleInputPassword1">Contraseña:</label> <label class="text-danger">*</label>
                                 <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
                             </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary mt-3">Aceptar</button>
+                            <div class="row mx-md-n5">
+                                <div class="col px-md-5">
+                                    <a type="button" class="btn btn-warning mt-3" href="' . $url . '"><i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</a>
+                                </div>
+                                <div class="col px-md-5">
+                                    <button type="submit" class="btn btn-success mt-3">Acceder <i class="fa fa-sign-in" aria-hidden="true"></i></button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -90,7 +96,6 @@ if ($_POST) {
             }
         }
     }
-
 } else {
     $txt .= ' d-none';
 }

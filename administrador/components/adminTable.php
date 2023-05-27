@@ -63,7 +63,11 @@ echo '
     }
 
     function eliminarRegistro(deleteId) {
-        document.cookie = 'deleteId=' + deleteId + ';path=/administrador';
+        path = '/administrador';
+        if (window.location.hostname === 'localhost') {
+            path = '/lolesportswiki' + path;
+        }
+        document.cookie = 'deleteId=' + deleteId + ';path=' + path;
         location.reload();
     }
 </script>
