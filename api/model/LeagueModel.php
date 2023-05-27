@@ -9,6 +9,6 @@ class LeagueModel extends Database
      */
     public function getLeagues($limit)
     {
-        return $this->select("SELECT * FROM ligas ORDER BY id ASC LIMIT ?", ["i", $limit]);
+        return $this->select("SELECT * FROM ligas ORDER BY id ASC", []);
     }
 }

@@ -9,6 +9,6 @@ class PositionModel extends Database
      */
     public function getPositions($limit)
     {
-        return $this->select("SELECT * FROM posiciones ORDER BY id ASC LIMIT ?", ["i", $limit]);
+        return $this->select("SELECT * FROM posiciones ORDER BY id ASC", []);
     }
 }

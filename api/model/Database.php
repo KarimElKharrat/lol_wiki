@@ -1,6 +1,7 @@
 <?php
 
-// namespace Model;
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
 
 class Database
 {
@@ -13,13 +14,27 @@ class Database
     {
         try {
             $this->connection = new \mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE_NAME);
-
+            $this->connection->set_charset('utf8');
             if (mysqli_connect_errno()) {
                 throw new \Exception("Could not connect to database.");
             }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+    }
+
+    /**
+     * Nos permite ejecutar la operación select y devuelve los datos de una forma más cómoda.
+     */
+    public function delete($query = "", $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement($query, $params);
+            return $stmt->close();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+        return false;
     }
 
     /**

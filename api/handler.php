@@ -8,8 +8,12 @@ $uri = explode('/', $uri);
 $class = $uri[3];
 $method = $uri[4];
 
-// pendiente split_liga, || mal hecho: players, team, split, country, coach
-$allowedClasses = ['user', 'league', 'player', 'team', 'split', 'rol', 'position', 'country', 'game', 'coach'];
+if (isset(explode('?', $_SERVER['REQUEST_URI'])[1])) {
+    $data = explode('?', $_SERVER['REQUEST_URI'])[1] ?? null;
+    $values = str_contains($data, '&') ? explode('&', $data) : [$data];
+}
+
+$allowedClasses = ['user', 'league', 'player', 'team', 'split', 'rol', 'position', 'country', 'game', 'coach', 'splitleague'];
 
 if ((isset($class) && !in_array($class, $allowedClasses)) || !isset($uri[3])) {
     header("HTTP/1.1 404 Not Found");
@@ -32,7 +36,6 @@ switch ($className) {
     case 'LeagueController':
         $objFeedController = new LeagueController();
         break;
-
     case 'SplitController':
         $objFeedController = new SplitController();
         break;
@@ -51,6 +54,9 @@ switch ($className) {
     case 'CoachController':
         $objFeedController = new CoachController();
         break;
+    case 'SplitleagueController':
+        $objFeedController = new SplitleagueController();
+        break;
 
     default:
         header("HTTP/1.1 404 Not Found");
@@ -60,4 +66,8 @@ switch ($className) {
 
 
 $strMethodName = $method . 'Action';
-$objFeedController->{$strMethodName}();
+if (isset($values) && !empty($values)) {
+    $objFeedController->{$strMethodName}($values);
+} else {
+    $objFeedController->{$strMethodName}();
+}

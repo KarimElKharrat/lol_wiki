@@ -1,12 +1,12 @@
 <?php
 
 require_once 'BaseController.php';
-require_once PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'CoachModel.php';
+require_once PROJECT_ROOT_PATH . DIRECTORY_SEPARATOR . 'api' . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'SplitleagueModel.php';
 
-class CoachController extends BaseController
+class SplitleagueController extends BaseController
 {
     /** 
-     * "/coach/list" Endpoint - lista de entrenadores
+     * "/splitleague/list" Endpoint - lista de split-liga
      */
     public function listAction()
     {
@@ -16,13 +16,13 @@ class CoachController extends BaseController
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $coachModel = new CoachModel();
+                $splitleagueModel = new SplitleagueModel();
                 $intLimit = 10;
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
-                $arrCoachs = $coachModel->getCoaches($intLimit);
-                $responseData = json_encode($arrCoachs);
+                $arrSplitleagues = $splitleagueModel->getSplitleagues($intLimit);
+                $responseData = json_encode($arrSplitleagues);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
@@ -46,7 +46,7 @@ class CoachController extends BaseController
     }
     
     /** 
-     * "/coach/delete" Endpoint - eliminar un usuario
+     * "/splitleague/delete" Endpoint - eliminar un split-liga
      */
     public function deleteAction($values)
     {
@@ -56,8 +56,8 @@ class CoachController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $id = intval(str_replace('id=', '', $values[0]));
-                $coachModel = new CoachModel();
-                $deleteResult = $coachModel->deleteCoach($id);
+                $splitleagueModel = new SplitleagueModel();
+                $deleteResult = $splitleagueModel->deleteSplitleagues($id);
                 $responseData = json_encode($deleteResult);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

@@ -9,6 +9,6 @@ class SplitModel extends Database
      */
     public function getSplits($limit)
     {
-        return $this->select("SELECT * FROM splits ORDER BY id ASC LIMIT ?", ["i", $limit]);
+        return $this->select("SELECT * FROM splits ORDER BY id ASC", []);
     }
 }

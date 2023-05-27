@@ -17,8 +17,18 @@ class PlayerModel extends Database
             INNER JOIN sexo ON per.sexo_id = sexo.id 
             INNER JOIN equipo_persona ON per.id = equipo_persona.id_persona 
             INNER JOIN equipos ON equipo_persona.id_equipo = equipos.id 
-            ORDER BY per.id ASC LIMIT ?",
-            ["i", $limit]
+            ORDER BY per.id ASC",
+            []
         );
+    }
+    
+    /**
+     * Elimina el jugador indicado.
+     */
+    public function deletePlayer($id)
+    {
+        $this->delete("DELETE FROM jugadores WHERE persona_id = ?", ["i", $id]);
+        $this->delete("DELETE FROM equipo_persona WHERE id_persona = ?", ["i", $id]);
+        return $this->delete("DELETE FROM personas WHERE id = ?", ["i", $id]);
     }
 }

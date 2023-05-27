@@ -9,6 +9,6 @@ class RolModel extends Database
      */
     public function getRols($limit)
     {
-        return $this->select("SELECT * FROM rols ORDER BY id ASC LIMIT ?", ["i", $limit]);
+        return $this->select("SELECT * FROM rols ORDER BY id ASC", []);
     }
 }
