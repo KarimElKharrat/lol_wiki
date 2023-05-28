@@ -49,7 +49,7 @@ foreach ($rows as $row) {
     $image_size = explode('x', $row['image_size'] ?? '');
     foreach ($row as $key => $value) {
         if ($key === 'image_size') continue;
-        if (($key === 'icono' || $key === 'image') && isset($value) && $value !== '') {
+        if (($key === 'icono' || $key === 'image' || $key === 'rol_image') && isset($value) && $value !== '') {
             echo '<td><img class="img-fluid" src="' . $value . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '"></td>';
         } else {
             echo '<td>' . ucfirst($value ?? '') . '</td>';
