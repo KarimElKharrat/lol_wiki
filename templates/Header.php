@@ -198,7 +198,6 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 </head>
 
 <body class="bg-light">
-    <?php echo 'logged:' . $_SESSION['isLogged'];?>
     <nav class="navbar navbar-expand-md navbar-light bg-light" style="font-size: 20px !important;">
 
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
@@ -211,14 +210,14 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
         <div class="mx-auto order-0">
 
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item mx-2">
                     <a class="nav-link" href="<?php echo './ligas.php'; ?>">Ligas</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item mx-2">
                     <a class="nav-link" href="<?php echo './equipos.php'; ?>">Equipos</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Jugadores</a>
+                <li class="nav-item mx-2">
+                    <a class="nav-link" href="<?php echo './jugadores.php'; ?>">Jugadores</a>
                 </li>
             </ul>
         </div>

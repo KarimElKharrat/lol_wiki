@@ -96,7 +96,6 @@ try {
 </head>
 
 <body class="bg-light">
-<?php echo 'logged:' . $_SESSION['isLogged'];?>
     <nav class="navbar navbar-expand-md navbar-light bg-light pb-0">
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 align-items-center">
             <ul class="navbar-nav mr-auto ml-5">
@@ -106,7 +105,7 @@ try {
                     </a>
                 </li>
                 <li class="nav-item ml-3">
-                    <a title="Ligas" class="nav-link text-primary" href="<?php echo $adminUrl . '/secciones/Leagues.php'; ?>">Ligas</a>
+                    <a title="Ligas" class="nav-link text-primary" href="<?php echo $adminUrl . '/secciones/League.php'; ?>">Ligas</a>
                 </li>
                 <li class="nav-item ml-3">
                     <a title="Equipos" class="nav-link text-primary" href="<?php echo $adminUrl . '/secciones/Teams.php'; ?>">Equipos</a>
