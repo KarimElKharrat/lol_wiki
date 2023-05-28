@@ -30,7 +30,7 @@ echo '<div class="mx-auto h3">Tabla de ' . $_SESSION['name'] . '</div>
             <tr>';
 
 foreach ($columns as $key => $column) {
-    if ($key === 'image_size') {
+    if ($key === 'image_size' || $key === 'rol_size') {
         continue;
     }
 
@@ -46,11 +46,14 @@ echo '
 
 foreach ($rows as $row) {
     echo '<tr>';
-    $image_size = explode('x', $row['image_size'] ?? '');
+    $image_size = explode('x', $row['image_size'] ?? '65x65');
+    $rol_size = explode('x', $row['rol_size'] ?? '20x20');
     foreach ($row as $key => $value) {
-        if ($key === 'image_size') continue;
-        if (($key === 'icono' || $key === 'image' || $key === 'rol_image') && isset($value) && $value !== '') {
+        if ($key === 'image_size' || $key === 'rol_size') continue;
+        if (($key === 'icono' || $key === 'image') && isset($value) && $value !== '') {
             echo '<td><img class="img-fluid" src="' . $value . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '"></td>';
+        } else if (($key === 'rol_image') && isset($value) && $value !== '') {
+            echo '<td><img class="img-fluid" src="' . $value . '" width="' . $rol_size[0] . '" height="' . $rol_size[1] . '"></td>';
         } else {
             echo '<td>' . ucfirst($value ?? '') . '</td>';
         }
