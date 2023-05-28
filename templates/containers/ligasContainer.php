@@ -1,80 +1,41 @@
 <?php
+// header("Cache-Control: no cache");
+// session_cache_limiter("private_no_expire");
 
-print('<div class="mx-auto h3">Resultado de búsquedas</div></div>');
+print('<div class="mx-auto h3">Ligas</div></div>');
 
 $output = '
     <div class="row my-3 text-left">
         <ul class="list-group col-md-12">
 ';
 
-if (isset($_POST['submit'])) {
-    $searchq = $_POST['search'];
-    $searchq = preg_replace("#[^0-9a-z]#i", "", $searchq);
+$curl = curl_init();
 
-    $players = [];
-    $teams = [];
-    $leagues = [];
-    $coaches = [];
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/splitleague/list',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+));
 
-    if ('' !== $searchq) {
-        $curl = curl_init();
+$tableData = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+$tableData = json_decode($tableData, true);
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/team/list?name=' . $searchq,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
+curl_close($curl);
 
-        $teams = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-        $teams = json_decode($teams, true);
+$_SESSION['pagina'] = 0;
+$_SESSION['totalPaginas'] = ceil(count($tableData) / 10);
+$_SESSION['tableData'] = [];
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/player/list?name=' . $searchq,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-
-        $players = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-        $players = json_decode($players, true);
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/coach/list?name=' . $searchq,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-
-        $coaches = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-        $coaches = json_decode($coaches, true);
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/splitleague/list?name=' . $searchq,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-
-        $leagues = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-        $leagues = json_decode($leagues, true);
-
-        curl_close($curl);
+if (empty($tableData)) {
+    $output .= '
+    <li href="#" class="list-group-item">
+        No hay resultados...
+    </li>';
+} else {
+    for ($i = 0; $i < $_SESSION['totalPaginas']; $i++) {
+        $_SESSION['tableData'][] = array_splice($tableData, 0, 10);
     }
-
-    $tableData = array_merge($players, $teams, $leagues, $coaches);
-    $_SESSION['pagina'] = 0;
-    $_SESSION['totalPaginas'] = ceil(count($tableData) / 10);
-    $_SESSION['tableData'] = [];
-
-    if (empty($tableData)) {
-        $output .= '
-        <li href="#" class="list-group-item">
-            No hay resultados...
-        </li>';
-        changePage(1);
-    } else {
-        for ($i = 0; $i < $_SESSION['totalPaginas']; $i++) {
-            $_SESSION['tableData'][] = array_splice($tableData, 0, 10);
-        }
-        changePage(1);
-    }
+    changePage(1);
 }
 
 if (isset($_POST['adelante'])) {

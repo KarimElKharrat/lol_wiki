@@ -1,9 +1,5 @@
 <?php
 
-if(!isset($_SESSION)) {
-    session_start();
-}
-
 if (!isset($_SESSION['isLogged'])) {
     $_SESSION['isLogged'] = false;
 }
@@ -202,6 +198,7 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 </head>
 
 <body class="bg-light">
+    <?php echo 'logged:' . $_SESSION['isLogged'];?>
     <nav class="navbar navbar-expand-md navbar-light bg-light" style="font-size: 20px !important;">
 
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
@@ -215,10 +212,10 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo './regiones.php'; ?>">Ligas</a>
+                    <a class="nav-link" href="<?php echo './ligas.php'; ?>">Ligas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Equipos</a>
+                    <a class="nav-link" href="<?php echo './equipos.php'; ?>">Equipos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Jugadores</a>
@@ -254,7 +251,7 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
                         ';
                     } else {
                         echo '
-                        <a class="btn btn-info" href="administrador/inicio.php" title="Acceder al panel de administrador">
+                        <a class="btn btn-info" href="administrador/index.php" title="Acceder al panel de administrador">
                             <i class="fa fa-lock" aria-hidden="true"></i>
                         </a>
                         ';

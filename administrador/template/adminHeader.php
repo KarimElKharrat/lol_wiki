@@ -96,6 +96,7 @@ try {
 </head>
 
 <body class="bg-light">
+<?php echo 'logged:' . $_SESSION['isLogged'];?>
     <nav class="navbar navbar-expand-md navbar-light bg-light pb-0">
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 align-items-center">
             <ul class="navbar-nav mr-auto ml-5">

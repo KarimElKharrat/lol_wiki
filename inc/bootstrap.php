@@ -1,8 +1,5 @@
 <?php
 
-header("Cache-Control: no cache");
-session_cache_limiter("private_no_expire");
-
 if(!isset($_SESSION)) {
     session_start();
 }

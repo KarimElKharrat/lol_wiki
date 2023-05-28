@@ -1,8 +1,6 @@
 <?php
 
-if (!isset($_SESSION)) {
-    session_start();
-}
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
     $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';

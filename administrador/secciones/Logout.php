@@ -1,9 +1,5 @@
 <?php
 
-if(!isset($_SESSION)) {
-    session_start();
-}
-
 require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
