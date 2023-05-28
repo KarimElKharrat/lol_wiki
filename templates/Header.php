@@ -230,7 +230,7 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 
             <nav class="navbar navbar-light bg-light ml-5">
                 <div class="container-fluid">
-                    <form class="d-flex input-group w-auto" method="post" action="prueba.php">
+                    <form class="d-flex input-group w-auto" method="post" action="busqueda.php">
                         <input type="text" class="form-control rounded" placeholder="Buscar" name="search"/>
                         <input type="submit" class="input-group-text border-0" name="submit" value="Buscar" />
                     </form>
