@@ -1,5 +1,8 @@
 <?php
-print('<div class="mx-auto h3">Equipos</div></div>');
+// header("Cache-Control: no cache");
+// session_cache_limiter("private_no_expire");
+
+print('<div class="mx-auto h3">Jugadores</div></div>');
 
 $output = '
     <div class="row my-3 text-left">
@@ -10,7 +13,7 @@ if (!isset($_POST['adelante']) && !isset($_POST['atras'])) {
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/team/list',
+        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/player/list',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => 'GET',
     ));
@@ -26,9 +29,9 @@ if (!isset($_POST['adelante']) && !isset($_POST['atras'])) {
 
     if (empty($tableData)) {
         $output .= '
-    <li href="#" class="list-group-item">
-        No hay resultados...
-    </li>';
+<li href="#" class="list-group-item">
+    No hay resultados...
+</li>';
     } else {
         for ($i = 0; $i < $_SESSION['totalPaginas']; $i++) {
             $_SESSION['tableData'][] = array_splice($tableData, 0, 10);
@@ -77,7 +80,6 @@ function changePage($num)
 function loadSearchPage()
 {
     $output = '';
-
     if (count($_SESSION['tableData']) > 0) {
 
         $tableData = $_SESSION['tableData'][$_SESSION['pagina'] - 1];

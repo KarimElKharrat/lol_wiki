@@ -9,33 +9,35 @@ $output = '
         <ul class="list-group col-md-12">
 ';
 
-$curl = curl_init();
-
-curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/splitleague/list',
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-));
-
-$tableData = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-$tableData = json_decode($tableData, true);
-
-curl_close($curl);
-
-$_SESSION['pagina'] = 0;
-$_SESSION['totalPaginas'] = ceil(count($tableData) / 10);
-$_SESSION['tableData'] = [];
-
-if (empty($tableData)) {
-    $output .= '
-    <li href="#" class="list-group-item">
-        No hay resultados...
-    </li>';
-} else {
-    for ($i = 0; $i < $_SESSION['totalPaginas']; $i++) {
-        $_SESSION['tableData'][] = array_splice($tableData, 0, 10);
+if (!isset($_POST['adelante']) && !isset($_POST['atras'])) {
+    $curl = curl_init();
+    
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/splitleague/list',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+    
+    $tableData = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+    $tableData = json_decode($tableData, true);
+    
+    curl_close($curl);
+    
+    $_SESSION['pagina'] = 0;
+    $_SESSION['totalPaginas'] = ceil(count($tableData) / 10);
+    $_SESSION['tableData'] = [];
+    
+    if (empty($tableData)) {
+        $output .= '
+        <li href="#" class="list-group-item">
+            No hay resultados...
+        </li>';
+    } else {
+        for ($i = 0; $i < $_SESSION['totalPaginas']; $i++) {
+            $_SESSION['tableData'][] = array_splice($tableData, 0, 10);
+        }
+        changePage(1);
     }
-    changePage(1);
 }
 
 if (isset($_POST['adelante'])) {
@@ -81,7 +83,7 @@ function loadSearchPage()
 
     if (count($_SESSION['tableData']) > 0) {
 
-        $tableData = $_SESSION['tableData'][$_SESSION['pagina']-1];
+        $tableData = $_SESSION['tableData'][$_SESSION['pagina'] - 1];
 
         foreach ($tableData as $data) {
             $nombre = $data['nombre'];
