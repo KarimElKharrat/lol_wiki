@@ -19,14 +19,22 @@ function add()
 }
 
 echo '<div class="mx-auto h3">Tabla de ' . $_SESSION['name'] . '</div>
-<div class="col-md-12 mt-3">
+<div class="col-md-12 text-center mt-3">
+<button title="Añadir" type="button" class="btn btn-success float-left mx-1 mb-3" style="margin: -0.25em;" onclick="addRegistro()"><i class="fa fa-plus" aria-hidden="true"></i> Añadir registro</button>
+<div class="mb-3">
+<br><br>
+</div>
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
     <table class="table table-hover table-bordered table-striped mb-0">
         <thead>
             <tr>';
 
 foreach ($columns as $key => $column) {
-    echo '<th scope="col">' . $key . '</th>';
+    if ($key === 'image_size') {
+        continue;
+    }
+
+    echo '<th scope="col">' . ucfirst($key) . '</th>';
 }
 
 echo '<th scope="col">Acciones</th>';
@@ -38,12 +46,16 @@ echo '
 
 foreach ($rows as $row) {
     echo '<tr>';
-
-    foreach ($row as $value) {
-        echo '<td>' . $value . '</td>';
+    $image_size = explode('x', $row['image_size'] ?? '');
+    foreach ($row as $key => $value) {
+        if ($key === 'image_size') continue;
+        if (($key === 'icono' || $key === 'image') && isset($value) && $value !== '') {
+            echo '<td><img class="img-fluid" src="' . $value . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '"></td>';
+        } else {
+            echo '<td>' . ucfirst($value ?? '') . '</td>';
+        }
     }
     echo '<td class="text-center">
-    <button title="Añadir" type="button" class="btn btn-success mx-1" style="margin: -0.25em;" onclick="addRegistro(' . $row['id'] . ')"><i class="fa fa-plus" aria-hidden="true"></i></button>
     <button title="Eliminar" type="button" class="btn btn-danger mx-1" style="margin: -0.25em;" onclick="eliminarRegistro(' . $row['id'] . ')"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </td>';
     echo '</tr>';
