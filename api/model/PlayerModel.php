@@ -10,7 +10,7 @@ class PlayerModel extends Database
     public function getPlayers($name = '')
     {
         return $this->select(
-            "SELECT per.id, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol FROM personas per 
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image FROM personas per 
             INNER JOIN jugadores jug ON per.id = jug.persona_id
             INNER JOIN rols ON jug.rol_id = rols.id
             INNER JOIN paises ON per.pais_id = paises.id

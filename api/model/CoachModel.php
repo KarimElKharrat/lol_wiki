@@ -10,7 +10,7 @@ class CoachModel extends Database
     public function getCoaches($name = '')
     {
         return $this->select(
-            "SELECT per.id, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, posiciones.nombre as posicion FROM personas per 
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, posiciones.nombre as posicion FROM personas per 
             INNER JOIN entrenadores en ON per.id = en.persona_id 
             INNER JOIN posiciones ON en.posicion_id = posiciones.id 
             INNER JOIN paises ON per.pais_id = paises.id 
