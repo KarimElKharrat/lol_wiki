@@ -8,20 +8,16 @@ class GameController extends BaseController
     /** 
      * "/game/list" Endpoint - lista de partidas
      */
-    public function listAction()
+    public function listAction($id = [''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
+                $id = str_replace('id=', '', $id[0]);
                 $gameModel = new GameModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrGames = $gameModel->getGames($intLimit);
+                $arrGames = $gameModel->getGames($id);
                 $responseData = json_encode($arrGames);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
