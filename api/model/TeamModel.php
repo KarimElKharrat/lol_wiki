@@ -33,6 +33,22 @@ class TeamModel extends Database
     }
 
     /**
+     * Devuelve a todos los equipos de un split-liga.
+     */
+    public function getTeamsBySplitId($id)
+    {
+        return $this->select(
+            "SELECT esl.id_equipo, eq.nombre, eq.tricode, eq.image, sl.liga_id, paises.iso, paises.nombre FROM equipos_split_liga esl
+            INNER JOIN equipos eq ON esl.id_equipo = eq.id
+            INNER JOIN split_liga sl ON esl.id_split_liga = sl.id
+            INNER JOIN paises ON eq.origen = paises.id
+            WHERE sl.id = ?
+            ORDER BY esl.id_equipo ASC",
+            ["i", $id]
+        );
+    }
+
+    /**
      * Elimina el equipo indicado.
      */
     public function deleteTeam($id)

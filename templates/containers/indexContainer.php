@@ -1,15 +1,15 @@
 <div class="col-md-12">
     <div class="jumbotron">
-        <h1 class="display-3">LOL WIKI</h1>
-        <p class="lead">Jumbo helper text</p>
+        <h1 class="display-3 text-center">LOL WIKI</h1>
+        <!-- <p class="lead">Jumbo helper text</p>
         <hr class="my-2">
         <p>More info</p>
         <p class="lead">
             <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p>
+        </p> -->
     </div>
 </div>
-
+<!-- 
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'London')">London</button>
   <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
@@ -17,7 +17,6 @@
 </div>
 
 <div class="col-md-12">
-<!-- Tab content -->
 <div id="London" class="tabcontent">
   <h3>London</h3>
   <p>London is the capital city of England.</p>
@@ -34,11 +33,11 @@
 </div>
 </div>
 
-<br>
+<br> -->
 
-<?php if (isset($_GET['name'])) echo $_GET['name']; ?>
+<!-- <?php if (isset($_GET['name'])) echo $_GET['name']; ?> -->
 <!-- <div class="col-md-4"></div> -->
-<div class="col-md-12">
+<!-- <div class="col-md-12">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -194,4 +193,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

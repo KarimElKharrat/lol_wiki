@@ -63,7 +63,7 @@ if ($_GET['typePage'] === 'player') {
         </div>
     </div>
     ';
-    
+
     $teamHistory = '
     <table class="table">
         <thead>
@@ -81,8 +81,8 @@ if ($_GET['typePage'] === 'player') {
         $teamHistory .= '<tr>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=team&id=' . $data['equipo_id'] . '"><img class="img-fluid" src="' . $data['team_image'] . '" width="35px" height="35px"></a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['liga'] . '</a></td>';
-        $teamHistory .= '<td style="padding: 8px;">' . $data['split'] . '</td>';
-        $teamHistory .= '<td style="padding: 8px;">' . $data['año'] . '</td>';
+        $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['split'] . '</a></td>';
+        $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['año'] . '</a></td>';
         $teamHistory .= '</tr>';
     }
 
@@ -98,7 +98,7 @@ if ($_GET['typePage'] === 'player') {
 if ($_GET['typePage'] === 'team') {
     $nombre = $tableData[0]['nombre'];
     $tricode = $tableData[0]['tricode'];
-    print('<h1 class="mb-5">Detalles de ' . $nombre . '</h1>  ');
+    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de ' . $nombre . '</h1></div>');
     $imagen = $tableData[0]['image'];
 
     $datos = [
@@ -107,16 +107,51 @@ if ($_GET['typePage'] === 'team') {
         'Pais' => '<img src="' . $url . 'img/icons/16/' . $tableData[0]['iso'] . '.png"> ' . $tableData[0]['pais'],
     ];
 
-    $table = '<table style="font-size: 14px;table-layout: fixed;">';
-
+    // DATA TABLE
+    $dataTable = '<table style="font-size: 14px;table-layout: fixed;">';
     foreach ($datos as $key => $dato) {
-        $table .= '<tr>';
-        $table .= '<th>' . $key . '</th>';
-        $table .= '<td style="padding: 8px;">' . $dato . '</td>';
-        $table .= '</tr>';
+        $dataTable .= '<tr>';
+        $dataTable .= '<th>' . $key . '</th>';
+        $dataTable .= '<td style="padding: 8px;">' . $dato . '</td>';
+        $dataTable .= '</tr>';
     }
+    $dataTable .= '</table>';
 
-    $table .= '</table>';
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/player/byteam?teamId=' . $_GET['id'] . '&splitleagueId=2',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $players = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+    $players = json_decode($players, true);
+
+    curl_close($curl);
+
+    // PLAYERS TABLE
+    $playersTable = '
+    <div class="text-center">
+        <h4>Roster actual</h4>
+    </div>
+    <table class="table">
+        <thead>
+            <th>País</th>
+            <th>Nombre completo</th>
+            <th>Rol</th>
+        </thead>
+        <tbody>';
+    foreach ($players as $player) {
+        $nombreCompleto = $player['nombre'] . ' "' . $player['alias'] . '" ' . $player['apellidos'];
+        $pais = '<img src="' . $url . 'img/icons/16/' . $player['iso'] . '.png">';
+        $playersTable .= '<tr>';
+        $playersTable .= '<td>' . $pais . '</td>';
+        $playersTable .= '<td><a href="' . $url . 'detalles.php?typePage=player&id=' . $player['id'] . '">' . $nombreCompleto . '</a></td>';
+        $playersTable .= '<td><img class="img-fluid" src="' . $player['rol_image'] . '" width="25" height="25"> ' . $player['rol'] . '</td>';
+        $playersTable .= '</tr>';
+    }
+    $playersTable .= '</tbody></table>';
 
     $card = '
     <div class="card" style="width: 22rem;">
@@ -127,7 +162,7 @@ if ($_GET['typePage'] === 'team') {
             <img src="' . $imagen . '" class="card-img-top" alt="Imagen">
         </div>
         <div class="card-body">
-            ' . $table . '
+            ' . $dataTable . '
         </div>
     </div>
     ';
@@ -142,7 +177,7 @@ if ($_GET['typePage'] === 'splitleague') {
     $año = $tableData[0]['año'];
     $split = $tableData[0]['split'];
     $abrabiacion = $tableData[0]['liga_abr'];
-    print('<h1 class="mb-5">Detalles de la ' . $abrabiacion . ' de ' . $split . '</h1>  ');
+    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de la ' . $abrabiacion . ' de ' . $split . ' ' . $año . '</h1></div>');
     $imagen = $tableData[0]['image'];
 
     $regionesAbr = ['EU', 'KR', 'NA', 'CN', 'INT'];
@@ -151,23 +186,34 @@ if ($_GET['typePage'] === 'splitleague') {
     $datos = [
         'Nombre' => $nombre,
         'Region' => str_replace($regionesAbr, $regiones, $region),
-        'Abr.' => $abrabiacion
-        // 'Pais' => '<img src="' . $url . 'img/icons/16/' . $tableData[0]['iso'] . '.png"> ' . $tableData[0]['pais'],
+        'Abr.' => $abrabiacion,
+        'Año' => $año
     ];
 
     $table = '<table style="font-size: 14px;table-layout: fixed;">';
-
     foreach ($datos as $key => $dato) {
         $table .= '<tr>';
         $table .= '<th>' . $key . '</th>';
         $table .= '<td style="padding: 8px;">' . $dato . '</td>';
         $table .= '</tr>';
     }
-
     $table .= '</table>';
 
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $players = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+    $players = json_decode($players, true);
+
+    curl_close($curl);
+
     $card = '
-    <div class="card" style="width: 22rem;">
+    <div class="card" style="width: 24rem;">
         <div class="card-header text-center" style="height: 5rem;">
             <h5 class="card-title">' . $nombre . ' de ' . $split . '</h5>
         </div>
@@ -183,7 +229,7 @@ if ($_GET['typePage'] === 'splitleague') {
 
 print('
 <div class="col-lg-9">
-    ' . ($teamHistory ?? '') . '
+    ' . ($teamHistory ?? '') . ($playersTable ?? '') . '
     <div class="jumbotron">
         <h1 class="display-3">LOL WIKI</h1>
         <p class="lead">Jumbo helper text</p>

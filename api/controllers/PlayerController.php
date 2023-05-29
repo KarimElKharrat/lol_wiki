@@ -115,16 +115,17 @@ class PlayerController extends BaseController
     /** 
      * "/player/byteam" Endpoint - un jugador
      */
-    public function byteamAction($id = [''])
+    public function byteamAction($values = ['', ''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $id = str_replace('id=', '', $id[0]);
+                $teamId = str_replace('teamId=', '', $values[0]);
+                $splitleagueId = str_replace('splitleagueId=', '', $values[1]);
                 $playerModel = new PlayerModel();
-                $arrPlayers = $playerModel->getPlayersByTeamId($id);
+                $arrPlayers = $playerModel->getPlayersByTeamId($teamId, $splitleagueId);
                 $responseData = json_encode($arrPlayers);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';

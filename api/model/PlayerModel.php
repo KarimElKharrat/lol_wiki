@@ -70,7 +70,7 @@ class PlayerModel extends Database
     /**
      * Devuelve a los jugadores de un equipo.
      */
-    public function getPlayersByTeamId($id)
+    public function getPlayersByTeamId($teamId, $splitleagueId)
     {
         return $this->select(
             "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
@@ -83,9 +83,9 @@ class PlayerModel extends Database
             INNER JOIN split_liga sl ON ep.id_split_liga = sl.id
             INNER JOIN ligas ON sl.liga_id = ligas.id
             INNER JOIN splits ON sl.split_id = splits.id
-            WHERE equipos.id = ?
+            WHERE equipos.id = ? AND sl.id = ?
             ORDER BY sl.`año`, sl.split_id ASC",
-            ["i", $id]
+            ["ii", [$teamId, $splitleagueId]]
         );
     }
 
