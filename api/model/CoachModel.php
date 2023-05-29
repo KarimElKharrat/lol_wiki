@@ -18,6 +18,7 @@ class CoachModel extends Database
             INNER JOIN equipo_persona ON per.id = equipo_persona.id_persona
             INNER JOIN equipos ON equipo_persona.id_equipo = equipos.id
             WHERE per.alias LIKE CONCAT('%',?,'%') OR per.nombre LIKE CONCAT('%',?,'%') OR per.apellidos LIKE CONCAT('%',?,'%')
+            GROUP BY per.id
             ORDER BY per.id ASC",
             ["sss", [$name, $name, $name]]
         );
