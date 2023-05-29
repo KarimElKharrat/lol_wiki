@@ -9,6 +9,9 @@ $output = '
         <ul class="list-group col-md-12">
 ';
 
+/**
+ * Recoge los datos de la api sólo cuando entras por primera vez a ésta página.
+ */
 if (!isset($_POST['adelante']) && !isset($_POST['atras'])) {
     $curl = curl_init();
 
@@ -40,10 +43,16 @@ if (!isset($_POST['adelante']) && !isset($_POST['atras'])) {
     }
 }
 
+/**
+ * Cambia la página cuando le das hacia delante.
+ */
 if (isset($_POST['adelante'])) {
     changePage(1);
 }
 
+/**
+ * Cambia la página cuando le das hacia atrás.
+ */
 if (isset($_POST['atras'])) {
     changePage(-1);
 }
@@ -67,6 +76,9 @@ $outputPagina =
 
 print($outputPagina . $output . $outputPagina);
 
+/**
+ * Cambia la página según el valor que se le pase.
+ */
 function changePage($num)
 {
     $pag = $_SESSION['pagina'] += $num;
@@ -77,8 +89,17 @@ function changePage($num)
     }
 }
 
+/**
+ * Carga la página actual, ésta se guarda en $_SESSION['pagina'].
+ */
 function loadSearchPage()
 {
+    if ($_SERVER['HTTP_HOST'] === 'localhost') {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
+    } else {
+        $url = 'https://' . $_SERVER['HTTP_HOST'] . '/';
+    }
+
     $output = '';
     if (count($_SESSION['tableData']) > 0) {
 
@@ -96,7 +117,7 @@ function loadSearchPage()
 
             if (isset($imagen) && $imagen !== '') {
                 $output .= '
-                <a href="#" class="list-group-item">
+                <a href="' . $url . 'detalles.php?typePage=' . $data['type'] . '&id=' . $data['id'] . '" class="list-group-item">
                     <div class="media align-items-center">
                         <div class="text-center" style="width: 150px;height: 100px;display: flex;align-items: center;justify-content: center;">
                             <img class="img-fluid" src="' . $imagen . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '">
@@ -109,7 +130,7 @@ function loadSearchPage()
                 </a>';
             } else {
                 $output .= '
-                <a href="#" class="list-group-item">
+                <a href="' . $url . 'detalles.php" class="list-group-item">
                     <div class="media">
                         <div class="media-body ml-3">
                         <h5 class="mt-0">' . ucfirst($imagen ?? '') . $nombre . ' ' . $alias . ' ' . $apellidos . '</h5>
