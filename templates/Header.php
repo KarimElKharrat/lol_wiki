@@ -1,9 +1,11 @@
 <?php
 
+// Comprobamos ponemos el loggeo por defecto a falso.
 if (!isset($_SESSION['isLogged'])) {
     $_SESSION['isLogged'] = false;
 }
 
+// Para no tener que cambiar la url cada vez que se subía un cambio se implemetó esto.
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
     $url = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/';
     $adminUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/lolesportswiki/administrador';
