@@ -55,6 +55,8 @@ class TeamModel extends Database
      */
     public function deleteTeam($id)
     {
+        $this->delete("DELETE FROM equipo_persona WHERE id_equipo=?", ["i", $id]);
+        $this->delete("DELETE FROM equipos_split_liga WHERE id_equipo=?", ["i", $id]);
         return $this->delete("DELETE FROM equipos WHERE id=?", ["i", $id]);
     }
 }
