@@ -211,7 +211,7 @@ if ($_GET['typePage'] === 'splitleague') {
     $año = $tableData[0]['año'];
     $splitName = $tableData[0]['split'];
     $abrabiacion = $tableData[0]['liga_abr'];
-    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de la ' . $abrabiacion . ' de ' . $splitName . ' ' . $año . '</h1></div>');
+    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de ' . $abrabiacion . ' ' . $splitName . ' ' . $año . '</h1></div>');
     $imagen = $tableData[0]['image'];
 
     $regionesAbr = ['EU', 'KR', 'NA', 'CN', 'INT'];
@@ -235,6 +235,7 @@ if ($_GET['typePage'] === 'splitleague') {
     $table .= '</table>';
 
     $splits = getApiCall('https://lolesportswiki.info/api/handler.php/splitleague/list?name=' . $tableData[0]['liga_abr']);
+    $splits = array_reverse($splits);
 
     $splitList = '<div class="border my-1 pt-3" style="font-size: 15px;width: 24rem;"><ul>';
     foreach ($splits as $split) {
@@ -293,7 +294,7 @@ print('
     : '') . '
 </div>
 <div class="col-lg-3">
-    ' . ($card ?? '') . $splitList . '
+    ' . ($card ?? '') . ($splitList ?? '') . '
 </div>
 ');
 

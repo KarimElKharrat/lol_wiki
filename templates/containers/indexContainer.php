@@ -1,196 +1,93 @@
+<?php
+
+print('
 <div class="col-md-12">
     <div class="jumbotron">
         <h1 class="display-3 text-center">LOL WIKI</h1>
-        <!-- <p class="lead">Jumbo helper text</p>
-        <hr class="my-2">
-        <p>More info</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p> -->
     </div>
 </div>
-<!-- 
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">London</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
-</div>
+');
 
-<div class="col-md-12">
-<div id="London" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-</div>
+$curl = curl_init();
 
-<div id="Paris" class="tabcontent">
-  <h3>Paris</h3>
-  <p>Paris is the capital of France.</p>
-</div>
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/splitleague/list',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+));
 
-<div id="Tokyo" class="tabcontent">
-  <h3>Tokyo</h3>
-  <p>Tokyo is the capital of Japan.</p>
-</div>
-</div>
+$splitleagues = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+$splitleagues = json_decode($splitleagues, true);
+$splitleagues = array_reverse($splitleagues);
 
-<br> -->
+// comprovar que temporada es
+$hoy = new DateTime();
+$primavera = new DateTime('March 20');
+$verano = new DateTime('June 20');
+$otoño = new DateTime('September 22');
+$invierno = new DateTime('December 21');
 
-<!-- <?php if (isset($_GET['name'])) echo $_GET['name']; ?> -->
-<!-- <div class="col-md-4"></div> -->
-<!-- <div class="col-md-12">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table-condensed" style="width:100%">
-                    <tr>
-                        <td>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="border px-4 py-2" style="background-color: white;">Round 1</div>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="border px-4 py-2" style="background-color: white;">Round 2</div>
-                            </div>
-                        </td>
-                        <td></td>
-                        <td>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="border px-4 py-2" style="background-color: white;">Round 3</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="input-group mb-3">
-                                <div class="form-control">Team 1</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">1</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">
-                            <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:30%; float: left; position:absolute; top:20%;"></div>
-                            <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:30%; float: left; position:absolute; top:50%;"></div>
-                            <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>
-                        </td>
-                        <td rowspan="2">
-                            <div class="input-group">
-                                <div class="form-control">Team 1</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">0</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <div class="form-control">Team 2</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">0</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="mb-3"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="input-group mb-3">
-                                <div class="form-control">Team 3</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">1</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="col-md-2" rowspan="2" style="padding:0px; position:relative; min-width:50px;">
-                            <div style="border-top: 2px solid #090; border-right: 2px solid #090; width:80%; height:30%; float: left; position:absolute; top:20%;"></div>
-                            <div style="border-bottom: 2px solid #f00; border-right: 2px solid #f00; width:80%; height:30%; float: left; position:absolute; top:50%;"></div>
-                            <div style="border-top: 2px solid #090; width: 20%; margin-left: 80%; float: right; position:absolute;"></div>
-                        </td>
-                        <td rowspan="2">
-                            <div class="input-group">
-                                <div class="form-control">Team 3</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">0</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="input-group">
-                                <div class="form-control">Team 4</div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">0</span>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+$estacionActual = '';
 
-<div class="round r-of-4">
-    <div class="bracket-game">
-        <div class="player top win">
-            Snute
-            <div class="score">
-                3
-            </div>
+switch(true) {
+    case $hoy >= $primavera && $hoy < $verano:
+        $estacionActual = 'Primavera';
+        break;
+
+    case $hoy >= $verano && $hoy < $otoño:
+        $estacionActual = 'Verano';
+        break;
+
+    case $hoy >= $otoño && $hoy < $invierno:
+        $estacionActual = 'Otoñó';
+        break;
+
+    default:
+        $estacionActual = 'Invierno';
+}
+
+$splitleagueCards = '
+<h4>Ligas actuales</h4>
+<div class="col-md-12 border p-2 mb-5">
+<div class="row">';
+foreach ($splitleagues as $splitleague) {
+    if (($hoy->format('Y') == $splitleague['año']) && ($estacionActual === $splitleague['split']) && ('INT' !== $splitleague['region'])) {
+        $img_size = explode('x', $splitleague['image_size']);
+        $splitleagueCards .= '<div class="col-sm-3 mb-3">';
+        $splitleagueCards .= '<div class="card">';
+        $splitleagueCards .= '
+        <div class="card-header align-items-center text-center" style="height: 4em;">
+            <h5 class="card-title">' . $splitleague['liga_abr'] . ' ' . $splitleague['split'] . ' ' . $splitleague['año'] . '</h5>
         </div>
-        <div class="player bot loss">
-            TLO
-            <div class="score">
-                1
-            </div>
+        <div class="card-body d-flex align-items-center bg-white mx-auto" style="min-height: 250px;">
+            <a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $splitleague['id'] . '"><img src="' . $splitleague['image'] . '" class="card-img-top" style="max-width: ' . $img_size[1] . 'px;" alt="Imagen" height="' . $img_size[0] . '"></a>
+        </div>';
+        $splitleagueCards .= '</div></div>';
+    }
+}
+$splitleagueCards .= '</div></div>';
+
+print($splitleagueCards);
+
+$splitleagueInternationalCards = '
+<h4>Eventos internacionales</h4>
+<div class="col-md-12 border p-2 mb-5">
+<div class="row">';
+foreach ($splitleagues as $splitleague) {
+    if (($hoy->format('Y') == $splitleague['año']) && ('INT' == $splitleague['region'])) {
+        $img_size = explode('x', $splitleague['image_size']);
+        $splitleagueInternationalCards .= '<div class="col-sm-3 mb-3">';
+        $splitleagueInternationalCards .= '<div class="card">';
+        $splitleagueInternationalCards .= '
+        <div class="card-header align-items-center text-center" style="height: 4em;">
+            <h5 class="card-title">' . $splitleague['liga_abr'] . ' ' . $splitleague['split'] . ' ' . $splitleague['año'] . '</h5>
         </div>
-    </div>
-    <div class="bracket-game cont">
-        <div class="player top loss">
-            ToD
-            <div class="score">
-                0
-            </div>
-        </div>
-        <div class="player bot win">
-            MC
-            <div class="score">
-                3
-            </div>
-        </div>
-    </div>
-</div>
-<div class="connectors r-of-2">
-    <div class="top-line"></div>
-    <div class="clear"></div>
-    <div class="bottom-line"></div>
-    <div class="clear"></div>
-    <div class="vert-line"></div>
-    <div class="clear"></div>
-    <div class="next-line"></div>
-    <div class="clear"></div>
-</div>
-<div class="round r-of-2">
-    <div class="bracket-game">
-        <div class="player top loss">
-            Snute
-            <div class="score">
-                2
-            </div>
-        </div>
-        <div class="player bot win">
-            MC
-            <div class="score">
-                3
-            </div>
-        </div>
-    </div>
-</div> -->
+        <div class="card-body d-flex align-items-center bg-white mx-auto" style="min-height: 250px;">
+            <a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $splitleague['id'] . '"><img src="' . $splitleague['image'] . '" class="card-img-top" style="max-width: ' . $img_size[1] . 'px;" alt="Imagen" height="' . $img_size[0] . '"></a>
+        </div>';
+        $splitleagueInternationalCards .= '</div></div>';
+    }
+}
+$splitleagueInternationalCards .= '</div></div>';
+
+print($splitleagueInternationalCards);
