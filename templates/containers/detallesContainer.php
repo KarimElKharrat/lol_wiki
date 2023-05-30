@@ -209,9 +209,9 @@ if ($_GET['typePage'] === 'splitleague') {
     $nombre = $tableData[0]['nombre'];
     $region = $tableData[0]['region'];
     $año = $tableData[0]['año'];
-    $split = $tableData[0]['split'];
+    $splitName = $tableData[0]['split'];
     $abrabiacion = $tableData[0]['liga_abr'];
-    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de la ' . $abrabiacion . ' de ' . $split . ' ' . $año . '</h1></div>');
+    print('<div class="col-lg-12"><h1 class="mb-5">Detalles de la ' . $abrabiacion . ' de ' . $splitName . ' ' . $año . '</h1></div>');
     $imagen = $tableData[0]['image'];
 
     $regionesAbr = ['EU', 'KR', 'NA', 'CN', 'INT'];
@@ -234,13 +234,23 @@ if ($_GET['typePage'] === 'splitleague') {
     }
     $table .= '</table>';
 
+    $splits = getApiCall('https://lolesportswiki.info/api/handler.php/splitleague/list?name=' . $tableData[0]['liga_abr']);
+
+    $splitList = '<div class="border my-1 pt-3" style="font-size: 15px;width: 24rem;"><ul>';
+    foreach ($splits as $split) {
+        $splitList .= '
+            <li><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $split['id'] . '">' . $split['liga_abr'] . ' de ' . $split['split'] . ' ' . $split['año'] . '</a></li>
+        ';
+    }
+    $splitList .= '</ul></div>';
+
     $teams = getApiCall('https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id']);
 
     $teamCards = '
     <h4>Equipos</h4>
     <div class="border p-2 mb-5">
     <div class="row">';
-    foreach($teams as $team) {
+    foreach ($teams as $team) {
         $img_size = explode('x', $team['image_size']);
         $teamCards .= '<div class="col-sm-3 mb-3">';
         $teamCards .= '<div class="card">';
@@ -259,7 +269,7 @@ if ($_GET['typePage'] === 'splitleague') {
     $card = '
     <div class="card" style="width: 24rem;">
         <div class="card-header text-center" style="height: 5rem;">
-            <h5 class="card-title">' . $nombre . ' de ' . $split . '</h5>
+            <h5 class="card-title">' . $nombre . ' de ' . $splitName . '</h5>
         </div>
         <div class="card-header text-center bg-white">
             <img src="' . $imagen . '" class="card-img-top" alt="Imagen">
@@ -283,7 +293,7 @@ print('
     : '') . '
 </div>
 <div class="col-lg-3">
-    ' . ($card ?? '') . '
+    ' . ($card ?? '') . $splitList . '
 </div>
 ');
 
