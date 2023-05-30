@@ -7,21 +7,13 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
 }
 
 // print('https://lolesportswiki.info/api/handler.php/' . $_GET['typePage'] . '/one?id=' . $_GET['id'] . '<br>');
-$curl = curl_init();
 
-curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/' . $_GET['typePage'] . '/one?id=' . $_GET['id'],
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_CUSTOMREQUEST => 'GET',
-));
-
-$tableData = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-$tableData = json_decode($tableData, true);
-
-curl_close($curl);
+$tableData = getApiCall('https://lolesportswiki.info/api/handler.php/' . $_GET['typePage'] . '/one?id=' . $_GET['id']);
 
 /**
- * Se ejecuta si estamos cargando a un jugador, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
+ * Se ejecuta si estamos cargando a un JUGADOR, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
  */
 if ($_GET['typePage'] === 'player') {
     $alias = $tableData[0]['alias'];
@@ -65,7 +57,7 @@ if ($_GET['typePage'] === 'player') {
     ';
 
     $teamHistory = '
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Equipo</th>
@@ -77,9 +69,10 @@ if ($_GET['typePage'] === 'player') {
         <tbody>
     ';
 
+    $tableData = array_reverse($tableData);
     foreach ($tableData as $data) {
         $teamHistory .= '<tr>';
-        $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=team&id=' . $data['equipo_id'] . '"><img class="img-fluid" src="' . $data['team_image'] . '" width="35px" height="35px"></a></td>';
+        $teamHistory .= '<td class="text-center" style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=team&id=' . $data['equipo_id'] . '"><img class="img-fluid" src="' . $data['team_image'] . '" width="35px" height="35px"></a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['liga'] . '</a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['split'] . '</a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['año'] . '</a></td>';
@@ -93,7 +86,9 @@ if ($_GET['typePage'] === 'player') {
 }
 
 /**
- * Se ejecuta si estamos cargando a un equipo, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
+ * Se ejecuta si estamos cargando a un EQUIPO, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
  */
 if ($_GET['typePage'] === 'team') {
     $nombre = $tableData[0]['nombre'];
@@ -117,41 +112,78 @@ if ($_GET['typePage'] === 'team') {
     }
     $dataTable .= '</table>';
 
-    $curl = curl_init();
+    $split_leagues = getApiCall('https://lolesportswiki.info/api/handler.php/splitleague/list?name=' . $tableData[0]['liga_abr']);
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/player/byteam?teamId=' . $_GET['id'] . '&splitleagueId=2',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-    ));
+    $playersBySplit = [];
 
-    $players = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-    $players = json_decode($players, true);
+    foreach ($split_leagues as $split) {
+        $playersBySplit[] = getApiCall('https://lolesportswiki.info/api/handler.php/player/byteamandsplit?teamId=' . $_GET['id'] . '&splitleagueId=' . $split['id']);
+    }
 
-    curl_close($curl);
+    $playersBySplit = array_reverse($playersBySplit);
+
+    $isAlive = !empty($playersBySplit[0]);
 
     // PLAYERS TABLE
-    $playersTable = '
-    <div class="text-center">
-        <h4>Roster actual</h4>
-    </div>
-    <table class="table">
-        <thead>
-            <th>País</th>
-            <th>Nombre completo</th>
-            <th>Rol</th>
-        </thead>
-        <tbody>';
-    foreach ($players as $player) {
-        $nombreCompleto = $player['nombre'] . ' "' . $player['alias'] . '" ' . $player['apellidos'];
-        $pais = '<img src="' . $url . 'img/icons/16/' . $player['iso'] . '.png">';
-        $playersTable .= '<tr>';
-        $playersTable .= '<td>' . $pais . '</td>';
-        $playersTable .= '<td><a href="' . $url . 'detalles.php?typePage=player&id=' . $player['id'] . '">' . $nombreCompleto . '</a></td>';
-        $playersTable .= '<td><img class="img-fluid" src="' . $player['rol_image'] . '" width="25" height="25"> ' . $player['rol'] . '</td>';
-        $playersTable .= '</tr>';
+    if ($isAlive) {
+        $playersTable = '
+        <div class="text-center">
+            <h4>Roster actual</h4>
+        </div>
+        <table class="table table-bordered mb-5 w-75">
+            <thead>
+                <th>País</th>
+                <th>Nombre completo</th>
+                <th>Rol</th>
+            </thead>
+            <tbody>';
+        foreach ($playersBySplit[0] as $player) {
+            $nombreCompleto = $player['nombre'] . ' "' . $player['alias'] . '" ' . $player['apellidos'];
+            $pais = '<img src="' . $url . 'img/icons/24/' . $player['iso'] . '.png">';
+            $playersTable .= '<tr>';
+            $playersTable .= '<td class="text-center">' . $pais . '</td>';
+            $playersTable .= '<td><a href="' . $url . 'detalles.php?typePage=player&id=' . $player['id'] . '">' . $nombreCompleto . '</a></td>';
+            $playersTable .= '<td><img class="img-fluid" src="' . $player['rol_image'] . '" width="25" height="25"> ' . $player['rol'] . '</td>';
+            $playersTable .= '</tr>';
+        }
+        $playersTable .= '</tbody></table>';
+    } else {
+        $playersTable = '
+        <div class="text-center">
+            <h4>Roster actual</h4>
+        </div>
+        <div class="text-center text-danger mb-5">
+            <h4>Este equipo se encuentra inactivo</h4>
+        </div>';
     }
-    $playersTable .= '</tbody></table>';
+
+    $historyTable = '
+    <div class="text-center">
+        <h4>Historial de Rosters</h4>
+    </div>
+    <table class="table table-bordered mb-5">
+        <thead>
+            <th>Liga</th>
+            <th>Año</th>
+            <th>Jugadores</th>
+        </thead>
+        <tbody>
+    ';
+    foreach ($playersBySplit as $playerBySplit) {
+        if (empty($playerBySplit)) continue;
+        $historyTable .= '<tr>';
+        $jugadores = '';
+        foreach ($playerBySplit as $player) {
+            $split = '<a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $player['split_league_id'] . '">' . $player['liga_abr'] . ' de ' . $player['split'] . '</a>';
+            $jugadores .= '<a class="mx-2" href="' . $url . 'detalles.php?typePage=player&id=' . $player['id'] . '"><img class="img-fluid" src="' . $player['rol_image'] . '" width="25" height="25"> ' . $player['alias'] . '</a>';
+        }
+
+        $historyTable .= '<td>' . $split . '</td>';
+        $historyTable .= '<td>' . $player['año'] . '</td>';
+        $historyTable .= '<td>' . $jugadores . '</td>';
+        $historyTable .= '</tr>';
+    }
+    $historyTable .= '</tbody></table>';
 
     $card = '
     <div class="card" style="width: 22rem;">
@@ -169,7 +201,9 @@ if ($_GET['typePage'] === 'team') {
 }
 
 /**
- * Se ejecuta si estamos cargando a un split-liga, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
+ * Se ejecuta si estamos cargando a un SPLIT-LIGA, inicializa los datos.
+ * ------------------------------------------------------------------------------------------------------------------------
  */
 if ($_GET['typePage'] === 'splitleague') {
     $nombre = $tableData[0]['nombre'];
@@ -199,18 +233,7 @@ if ($_GET['typePage'] === 'splitleague') {
     }
     $table .= '</table>';
 
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id'],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-    ));
-
-    $players = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
-    $players = json_decode($players, true);
-
-    curl_close($curl);
+    $players = getApiCall('https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id']);
 
     $card = '
     <div class="card" style="width: 24rem;">
@@ -229,16 +252,7 @@ if ($_GET['typePage'] === 'splitleague') {
 
 print('
 <div class="col-lg-9">
-    ' . ($teamHistory ?? '') . ($playersTable ?? '') . '
-    <div class="jumbotron">
-        <h1 class="display-3">LOL WIKI</h1>
-        <p class="lead">Jumbo helper text</p>
-        <hr class="my-2">
-        <p>More info</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p>
-    </div>
+    ' . ($teamHistory ?? '') . ($playersTable ?? '') . ($historyTable ?? '') . '
     <div class="jumbotron">
         <h1 class="display-3">LOL WIKI</h1>
         <p class="lead">Jumbo helper text</p>
@@ -253,3 +267,22 @@ print('
     ' . ($card ?? '') . '
 </div>
 ');
+
+
+function getApiCall($url)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+    ));
+
+    $splits = str_replace('/var/www/vhosts/40650746.servicio-online.net/lolesportswiki.info/api', '', curl_exec($curl));
+    $splits = json_decode($splits, true);
+
+    curl_close($curl);
+
+    return $splits;
+}
