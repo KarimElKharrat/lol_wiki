@@ -20,10 +20,10 @@ function add()
 
 echo '<div class="mx-auto h3">Tabla de ' . $_SESSION['name'] . '</div>
 <div class="col-md-12 text-center mt-3">
-<button title="Añadir" type="button" class="btn btn-success float-left mx-1 mb-3" style="margin: -0.25em;" onclick="addRegistro()"><i class="fa fa-plus" aria-hidden="true"></i> Añadir registro</button>
+<!--<button title="Añadir" type="button" class="btn btn-success float-left mx-1 mb-3" style="margin: -0.25em;" onclick="addRegistro()"><i class="fa fa-plus" aria-hidden="true"></i> Añadir registro</button>
 <div class="mb-3">
 <br><br>
-</div>
+</div>-->
 <div class="table-wrapper-scroll-y my-custom-scrollbar">
     <table class="table table-hover table-bordered table-striped mb-0">
         <thead>
@@ -51,7 +51,7 @@ foreach ($rows as $row) {
     foreach ($row as $key => $value) {
         if ($key === 'image_size' || $key === 'rol_size' || $key === 'type') continue;
         if (($key === 'icono' || $key === 'image') && isset($value) && $value !== '') {
-            echo '<td><img class="img-fluid" src="' . $value . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '"></td>';
+            echo '<td><img class="img-fluid" src="' . $value . '" width="' . ((int) ($image_size[0]/2)) . '" height="' . ((int) ($image_size[1]/2)) . '"></td>';
         } else if (($key === 'rol_image') && isset($value) && $value !== '') {
             echo '<td><img class="img-fluid" src="' . $value . '" width="' . $rol_size[0] . '" height="' . $rol_size[1] . '"></td>';
         } else {

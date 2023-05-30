@@ -113,9 +113,9 @@ try {
                 <li class="nav-item ml-3">
                     <a title="Jugadores" class="nav-link text-primary" href="<?php echo $adminUrl . '/secciones/Players.php'; ?>">Jugadores</a>
                 </li>
-                <li class="nav-item ml-3">
+                <!-- <li class="nav-item ml-3">
                     <a title="Entrenadores" class="nav-link text-primary" href="<?php echo $adminUrl . '/secciones/Coaches.php'; ?>">Entrenadores</a>
-                </li>
+                </li> -->
             </ul>
         </div>
         <div class="mx-auto order-0">
