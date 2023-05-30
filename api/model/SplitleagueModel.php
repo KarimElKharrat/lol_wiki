@@ -14,7 +14,7 @@ class SplitleagueModel extends Database
             INNER JOIN ligas l ON sl.liga_id = l.id
             INNER JOIN splits s ON sl.split_id = s.id
             WHERE l.nombre_abr LIKE CONCAT('%',?,'%') OR l.nombre LIKE CONCAT('%',?,'%')
-            ORDER BY l.nombre_abr, sl.`año`",
+            ORDER BY sl.`año`, s.id ASC",
             ["ss", [$name, $name]]
         );
     }

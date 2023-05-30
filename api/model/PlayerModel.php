@@ -30,7 +30,7 @@ class PlayerModel extends Database
     public function getAllPlayers()
     {
         return $this->select(
-            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, splits.nombre AS split FROM personas per
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, ligas.nombre_abr AS liga_abr, splits.nombre AS split FROM personas per
             INNER JOIN jugadores jug ON per.id = jug.persona_id
             INNER JOIN rols ON jug.rol_id = rols.id
             INNER JOIN paises ON per.pais_id = paises.id
@@ -51,7 +51,7 @@ class PlayerModel extends Database
     public function getOnePlayer($id)
     {
         return $this->select(
-            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, ligas.nombre_abr AS liga_abr, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
             INNER JOIN jugadores jug ON per.id = jug.persona_id
             INNER JOIN rols ON jug.rol_id = rols.id
             INNER JOIN paises ON per.pais_id = paises.id
@@ -68,12 +68,12 @@ class PlayerModel extends Database
     }
 
     /**
-     * Devuelve a los jugadores de un equipo.
+     * Devuelve a los jugadores de un equipo en un split.
      */
-    public function getPlayersByTeamId($teamId, $splitleagueId)
+    public function getPlayersByTeamandSplitId($teamId, $splitleagueId)
     {
         return $this->select(
-            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, ligas.nombre_abr AS liga_abr, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
             INNER JOIN jugadores jug ON per.id = jug.persona_id
             INNER JOIN rols ON jug.rol_id = rols.id
             INNER JOIN paises ON per.pais_id = paises.id
@@ -86,6 +86,28 @@ class PlayerModel extends Database
             WHERE equipos.id = ? AND sl.id = ?
             ORDER BY sl.`año`, sl.split_id ASC",
             ["ii", [$teamId, $splitleagueId]]
+        );
+    }
+
+    /**
+     * Devuelve a los jugadores de un equipo en un split.
+     */
+    public function getPlayersByTeamId($teamId)
+    {
+        return $this->select(
+            "SELECT per.id, per.image, per.image_size, per.alias, per.nombre, per.apellidos, per.fecha_nacimiento, sexo.nombre AS sexo, equipos.id as equipo_id, equipos.image AS team_image, equipos.tricode, equipos.nombre AS equipo, paises.iso, paises.nombre AS pais, rols.nombre as rol, rols.image as rol_image, rols.image_size AS rol_size, ligas.nombre AS liga, ligas.nombre_abr AS liga_abr, splits.nombre AS split, sl.`año`, sl.id as split_league_id FROM personas per
+            INNER JOIN jugadores jug ON per.id = jug.persona_id
+            INNER JOIN rols ON jug.rol_id = rols.id
+            INNER JOIN paises ON per.pais_id = paises.id
+            INNER JOIN sexo ON per.sexo_id = sexo.id
+            INNER JOIN equipo_persona ep ON per.id = ep.id_persona
+            INNER JOIN equipos ON ep.id_equipo = equipos.id
+            INNER JOIN split_liga sl ON ep.id_split_liga = sl.id
+            INNER JOIN ligas ON sl.liga_id = ligas.id
+            INNER JOIN splits ON sl.split_id = splits.id
+            WHERE equipos.id = ?
+            ORDER BY sl.`año`, sl.split_id ASC",
+            ["i", $teamId]
         );
     }
 

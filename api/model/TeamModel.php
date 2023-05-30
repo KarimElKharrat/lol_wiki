@@ -24,8 +24,10 @@ class TeamModel extends Database
     public function getOneTeam($id)
     {
         return $this->select(
-            "SELECT eq.id, eq.image, eq.image_size, eq.nombre, eq.tricode, paises.iso, paises.nombre AS pais, 'team' AS type FROM equipos eq
+            "SELECT eq.id, eq.image, eq.image_size, eq.nombre, eq.tricode, paises.iso, paises.nombre AS pais, l.nombre_abr AS liga_abr, 'team' AS type FROM equipos eq
             INNER JOIN paises ON eq.origen = paises.id
+            INNER JOIN split_liga sl ON eq.ultima_split_liga = sl.id
+            INNER JOIN ligas AS l ON sl.liga_id = l.id
             WHERE eq.id = ?
             ORDER BY id ASC",
             ["i", $id]

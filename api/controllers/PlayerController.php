@@ -113,9 +113,9 @@ class PlayerController extends BaseController
     }
 
     /** 
-     * "/player/byteam" Endpoint - un jugador
+     * "/player/byteamandsplit" Endpoint - un jugador
      */
-    public function byteamAction($values = ['', ''])
+    public function byteamandsplitAction($values = ['', ''])
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -125,7 +125,43 @@ class PlayerController extends BaseController
                 $teamId = str_replace('teamId=', '', $values[0]);
                 $splitleagueId = str_replace('splitleagueId=', '', $values[1]);
                 $playerModel = new PlayerModel();
-                $arrPlayers = $playerModel->getPlayersByTeamId($teamId, $splitleagueId);
+                $arrPlayers = $playerModel->getPlayersByTeamandSplitId($teamId, $splitleagueId);
+                $responseData = json_encode($arrPlayers);
+            } catch (\Error $e) {
+                $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        } else {
+            $strErrorDesc = 'Method not supported';
+            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+        }
+
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(
+                json_encode(array('error' => $strErrorDesc)),
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+
+    /** 
+     * "/player/byteam" Endpoint - un jugador
+     */
+    public function byteamAction($id = [''])
+    {
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        if (strtoupper($requestMethod) == 'GET') {
+            try {
+                $teamId = str_replace('teamId=', '', $id[0]);
+                $playerModel = new PlayerModel();
+                $arrPlayers = $playerModel->getPlayersByTeamId($teamId);
                 $responseData = json_encode($arrPlayers);
             } catch (\Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong! Please contact support.';
