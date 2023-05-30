@@ -75,7 +75,7 @@ if ($_GET['typePage'] === 'player') {
         $teamHistory .= '<td class="text-center" style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=team&id=' . $data['equipo_id'] . '"><img class="img-fluid" src="' . $data['team_image'] . '" width="35px" height="35px"></a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['liga'] . '</a></td>';
         $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['split'] . '</a></td>';
-        $teamHistory .= '<td style="padding: 8px;"><a href="' . $url . 'detalles.php?typePage=splitleague&id=' . $data['split_league_id'] . '">' . $data['año'] . '</a></td>';
+        $teamHistory .= '<td style="padding: 8px;">' . $data['año'] . '</td>';
         $teamHistory .= '</tr>';
     }
 
@@ -127,7 +127,7 @@ if ($_GET['typePage'] === 'team') {
     // PLAYERS TABLE
     if ($isAlive) {
         $playersTable = '
-        <div class="text-center">
+        <div>
             <h4>Roster actual</h4>
         </div>
         <table class="table table-bordered mb-5 w-75">
@@ -149,7 +149,7 @@ if ($_GET['typePage'] === 'team') {
         $playersTable .= '</tbody></table>';
     } else {
         $playersTable = '
-        <div class="text-center">
+        <div>
             <h4>Roster actual</h4>
         </div>
         <div class="text-center text-danger mb-5">
@@ -158,7 +158,7 @@ if ($_GET['typePage'] === 'team') {
     }
 
     $historyTable = '
-    <div class="text-center">
+    <div>
         <h4>Historial de Rosters</h4>
     </div>
     <table class="table table-bordered mb-5">
@@ -224,7 +224,8 @@ if ($_GET['typePage'] === 'splitleague') {
         'Año' => $año
     ];
 
-    $table = '<table style="font-size: 14px;table-layout: fixed;">';
+    $table = '
+    <table style="font-size: 14px;table-layout: fixed;">';
     foreach ($datos as $key => $dato) {
         $table .= '<tr>';
         $table .= '<th>' . $key . '</th>';
@@ -233,7 +234,27 @@ if ($_GET['typePage'] === 'splitleague') {
     }
     $table .= '</table>';
 
-    $players = getApiCall('https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id']);
+    $teams = getApiCall('https://lolesportswiki.info/api/handler.php/team/bysplit?id=' . $_GET['id']);
+
+    $teamCards = '
+    <h4>Equipos</h4>
+    <div class="border p-2 mb-5">
+    <div class="row">';
+    foreach($teams as $team) {
+        $img_size = explode('x', $team['image_size']);
+        $teamCards .= '<div class="col-sm-3 mb-3">';
+        $teamCards .= '<div class="card">';
+        $teamCards .= '
+        <div class="card-header align-items-center text-center" style="height: 4em;">
+            <h5 class="card-title">' . $team['nombre'] . '</h5>
+        </div>
+        <div class="card-body d-flex align-items-center bg-white mx-auto" style="min-height: 200px;">
+            <a href="' . $url . 'detalles.php?typePage=team&id=' . $team['id_equipo'] . '"><img src="' . $team['image'] . '" class="card-img-top" style="max-width: ' . $img_size[1] . 'px;" alt="Imagen" height="' . $img_size[0] . '"></a>
+        </div>';
+        $teamCards .= '</div></div>';
+    }
+    $teamCards .= '</div></div>';
+
 
     $card = '
     <div class="card" style="width: 24rem;">
@@ -252,16 +273,14 @@ if ($_GET['typePage'] === 'splitleague') {
 
 print('
 <div class="col-lg-9">
-    ' . ($teamHistory ?? '') . ($playersTable ?? '') . ($historyTable ?? '') . '
+    ' . ($teamHistory ?? '') . ($playersTable ?? '') . ($historyTable ?? '') . ($teamCards ?? '') . '
+    ' . (('' == ($teamHistory ?? '') && '' == ($playersTable ?? '') && '' == ($historyTable ?? '') && '' == ($teamCards ?? ''))
+    ? '
     <div class="jumbotron">
         <h1 class="display-3">LOL WIKI</h1>
-        <p class="lead">Jumbo helper text</p>
-        <hr class="my-2">
-        <p>More info</p>
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
-        </p>
-    </div>
+        <p class="lead">Ésta página esá actualmente vacía</p>
+    </div>'
+    : '') . '
 </div>
 <div class="col-lg-3">
     ' . ($card ?? '') . '

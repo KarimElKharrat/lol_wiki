@@ -158,11 +158,10 @@ function loadSearchPage()
                 <a href="' . $url . 'detalles.php?typePage=' . $data['type'] . '&id=' . $data['id'] . '" class="list-group-item">
                     <div class="media align-items-center">
                         <div class="text-center" style="width: 150px;height: 100px;display: flex;align-items: center;justify-content: center;">
-                            <img class="img-fluid" src="' . $imagen . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '">
+                            <img class="img-fluid" src="' . $imagen . '" width="' . ((int) ($image_size[0]/2)) . '" height="' . ((int) ($image_size[1]/2)) . '">
                         </div>
                         <div class="media-body ml-3">
                             <h5 class="mt-0">' . $year . ' ' . $split . $liga_abr . $nombre . $alias . $apellidos . '</h5>
-                            <p>Texto del componente.</p>
                         </div>
                     </div>
                 </a>';
@@ -172,7 +171,6 @@ function loadSearchPage()
                     <div class="media">
                         <div class="media-body ml-3">
                         <h5 class="mt-0">' . ucfirst($imagen ?? '') . $nombre . ' ' . $alias . ' ' . $apellidos . '</h5>
-                        <p>Texto del componente.</p>
                         </div>
                     </div>
                 </a>';
