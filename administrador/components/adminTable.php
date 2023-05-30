@@ -30,7 +30,7 @@ echo '<div class="mx-auto h3">Tabla de ' . $_SESSION['name'] . '</div>
             <tr>';
 
 foreach ($columns as $key => $column) {
-    if ($key === 'image_size' || $key === 'rol_size') {
+    if ($key === 'image_size' || $key === 'rol_size' || $key === 'type') {
         continue;
     }
 
@@ -49,7 +49,7 @@ foreach ($rows as $row) {
     $image_size = explode('x', $row['image_size'] ?? '65x65');
     $rol_size = explode('x', $row['rol_size'] ?? '20x20');
     foreach ($row as $key => $value) {
-        if ($key === 'image_size' || $key === 'rol_size') continue;
+        if ($key === 'image_size' || $key === 'rol_size' || $key === 'type') continue;
         if (($key === 'icono' || $key === 'image') && isset($value) && $value !== '') {
             echo '<td><img class="img-fluid" src="' . $value . '" width="' . $image_size[0] . '" height="' . $image_size[1] . '"></td>';
         } else if (($key === 'rol_image') && isset($value) && $value !== '') {
