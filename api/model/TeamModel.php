@@ -40,7 +40,7 @@ class TeamModel extends Database
     public function getTeamsBySplitId($id)
     {
         return $this->select(
-            "SELECT esl.id_equipo, eq.nombre, eq.tricode, eq.image, sl.liga_id, paises.iso, paises.nombre FROM equipos_split_liga esl
+            "SELECT esl.id_equipo, eq.nombre, eq.tricode, eq.image, eq.image_size, sl.liga_id, paises.iso, paises.nombre as pais FROM equipos_split_liga esl
             INNER JOIN equipos eq ON esl.id_equipo = eq.id
             INNER JOIN split_liga sl ON esl.id_split_liga = sl.id
             INNER JOIN paises ON eq.origen = paises.id
