@@ -225,9 +225,6 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
                 <li class="nav-item mx-2">
                     <a class="nav-link" href="<?php echo './jugadores.php'; ?>">Jugadores</a>
                 </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link" href="<?php echo './jugadores.php'; ?>">Entrenadores</a>
-                </li>
             </ul>
         </div>
 

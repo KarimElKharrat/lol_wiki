@@ -15,7 +15,7 @@ $tableData = getApiCall('https://lolesportswiki.info/api/handler.php/' . $_GET['
  * Se ejecuta si estamos cargando a un JUGADOR, inicializa los datos.
  * ------------------------------------------------------------------------------------------------------------------------
  */
-if ($_GET['typePage'] === 'player') {
+if ($_GET['typePage'] === 'player' && isset($tableData[0])) {
     $alias = $tableData[0]['alias'];
     print('<div class="col-lg-12"><h1 class="mb-5">Detalles de ' . $alias . '</h1></div>');
     $nombreCompleto = $tableData[0]['nombre'] . ' "' . $tableData[0]['alias'] . '" ' . $tableData[0]['apellidos'];
@@ -90,7 +90,7 @@ if ($_GET['typePage'] === 'player') {
  * Se ejecuta si estamos cargando a un EQUIPO, inicializa los datos.
  * ------------------------------------------------------------------------------------------------------------------------
  */
-if ($_GET['typePage'] === 'team') {
+if ($_GET['typePage'] === 'team' && isset($tableData[0])) {
     $nombre = $tableData[0]['nombre'];
     $tricode = $tableData[0]['tricode'];
     print('<div class="col-lg-12"><h1 class="mb-5">Detalles de ' . $nombre . '</h1></div>');
@@ -205,7 +205,7 @@ if ($_GET['typePage'] === 'team') {
  * Se ejecuta si estamos cargando a un SPLIT-LIGA, inicializa los datos.
  * ------------------------------------------------------------------------------------------------------------------------
  */
-if ($_GET['typePage'] === 'splitleague') {
+if ($_GET['typePage'] === 'splitleague' && isset($tableData[0])) {
     $nombre = $tableData[0]['nombre'];
     $region = $tableData[0]['region'];
     $año = $tableData[0]['año'];
